@@ -5,6 +5,7 @@ using UnityEngine;
 public class CreateGrid : MonoBehaviour {
 
     private Grid grid;
+    public Grid Grid { get { return grid; } }
 
     [SerializeField]
     private LayerMask obstacleMask;
@@ -20,21 +21,24 @@ public class CreateGrid : MonoBehaviour {
 
     public Vector2 GridSize { get { return gridSize; } }
 
-
     [SerializeField]
     private List<GameObject> objs = new List<GameObject>();
 
+    private List<GameObject> pathNodes = new List<GameObject>();
+    public List<GameObject> PathNodes
+    {
+        get { return pathNodes; }
+        set { pathNodes = value; }
+    }
+
     private void Start()
     {
-        grid = new Grid((int)gridSize.x,(int)gridSize.y);
-       
         create();
     }
 
     private void create()
     {
-        worldBottomLeft = transform.position - Vector3.right * grid.GridWidth / 2 - Vector3.up * grid.GridHeight / 2;
-        worldPoint = transform.position + Vector3.right * grid.GridWidth / 2 + Vector3.up * grid.GridHeight / 2;
+        grid = new Grid( (int) gridSize.x, (int) gridSize.y);
 
         for (int x = 0; x < grid.GridWidth; x++)
         {
@@ -44,34 +48,23 @@ public class CreateGrid : MonoBehaviour {
             }
         }
     }
-
+    
     private void instantiateObject(int x, int y)
     {
         GameObject obj = GameObject.Instantiate(gridObjectPrefab);
         obj.transform.position = new Vector2(x, y);
         obj.name = obj.name + " " + x + " " + y;
         setWalls();
-        checkObstacles(obj);
         objs.Add(obj);
     }
-
-    private void checkObstacles(GameObject obj)
-    {
-        if (obj.layer != obstacleMask)
-            return;
-
-        int x = (int)obj.transform.position.x;
-        int y = (int)obj.transform.position.y;
-
-        grid.GetNode(x, y).IsWalkable = false;
-    }
-
+    
     private void setWalls()
     {
         grid.GetNode(0, 0).IsWalkable = false;
 
         setColors();
     }
+
     private void setColors()
     {
         for (int i = 0; i < objs.Count; i++)
@@ -83,4 +76,15 @@ public class CreateGrid : MonoBehaviour {
             }
         }
     }
+
+    private void Update()
+    {
+        for (int i = 0; i < pathNodes.Count; i++)
+        {
+            Renderer rend = pathNodes[i].GetComponent<Renderer>();
+
+            rend.material.color = Color.black;
+        }
+    }
+
 }

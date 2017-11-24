@@ -34,6 +34,30 @@ public class Grid {
         }
     }
 
+    public List<Node>GetNeighbours(Vector2 pos)
+    {
+        List<Node> neighbours = new List<Node>();
+
+        int x = (int)pos.x;
+        int y = (int)pos.y;
+
+        for (int i = -1; i < 1; i++)
+        {
+            for (int j = -1; j < 1; j++)
+            {
+                if (i == 0 && j == 0)
+                    continue;
+
+                if(IsOnGrid(x + i, y + j))
+                {
+                    neighbours.Add(GetNode(x + i, y + j));
+                }
+            }
+        }
+
+        return neighbours;
+    }
+
     /// <summary>
     /// Gets a node from the grid.
     /// </summary>

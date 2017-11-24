@@ -17,16 +17,33 @@ public class Node {
     }
 
     private int gCost;
-    public int GCost { get { return gCost; } }
+    public int GCost
+    {
+        get { return gCost; }
+        set { gCost = value; }
+    }
 
     private int hCost;
-    public int HCost { get { return hCost; } }
+    public int HCost
+    {
+        get { return hCost; }
+        set { hCost = value; }
+    }
+    private int fCost;
 
-    public int FCost { get { return gCost + hCost; } }
+    public int FCost
+    {
+        get { return gCost + hCost; }
+        set { fCost = value; }
+    }
 
     private Node parent;
 
-    public Node Parent { get { return parent; } }
+    public Node Parent
+    {
+        get { return parent; }
+        set { parent = value; }
+    }
 
     private Vector2 position;
     public Vector2 Position { get { return position; } }

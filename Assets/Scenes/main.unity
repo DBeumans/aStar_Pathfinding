@@ -192,7 +192,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 820100617}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 5.18, y: 4.4, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -283,6 +283,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2004746166}
   - component: {fileID: 2004746165}
+  - component: {fileID: 2004746167}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -303,10 +304,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   gridObjectPrefab: {fileID: 1641375701454672, guid: 4d0368a662052bd48a15a5012cd4dbb7,
     type: 2}
-  gridSize: {x: 5, y: 10}
+  gridSize: {x: 10, y: 10}
   objs: []
 --- !u!4 &2004746166
 Transform:
@@ -321,3 +322,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2004746167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2004746164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c592874314992419ba1e2c8824ab21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPosition: {x: 0, y: 4}
+  endPosition: {x: 0, y: 8}

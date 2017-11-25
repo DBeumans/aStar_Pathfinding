@@ -5,7 +5,25 @@ using UnityEngine;
 public class Node {
 
     private bool isWalkable;
-    public bool IsWalkable { get { return isWalkable; }set { isWalkable = value; } }
+    public bool IsWalkable
+    {
+        get { return isWalkable; }
+        set { isWalkable = value; }
+    }
+
+    private bool isEnd;
+    public bool IsEnd
+    {
+        get { return isEnd; }
+        set { isEnd = value; }
+    }
+
+    private bool isStart;
+    public bool IsStart
+    {
+        get { return isStart; }
+        set { isStart = value; }
+    }
     
     private Vector2 worldPosition;
     public Vector2 WorldPosition { get { return worldPosition; } set { worldPosition = value; } }
@@ -46,6 +64,19 @@ public class Node {
     }
 
     private Vector2 position;
-    public Vector2 Position { get { return position; } }
+    public Vector2 Position
+    {
+        get { return position; }
+    }
+
+    public void Reset()
+    {
+        gCost = 0;
+        hCost = 0;
+        fCost = 0;
+        parent = null;
+        isWalkable = true;
+        isEnd = false;
+    }
 
 }

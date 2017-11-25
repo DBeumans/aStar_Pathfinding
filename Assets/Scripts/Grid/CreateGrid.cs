@@ -15,17 +15,28 @@ public class CreateGrid : MonoBehaviour {
 
     private Vector3 worldBottomLeft;
     private Vector3 worldPoint;
+    public Vector3 WorldPoint
+    {
+        get { return worldPoint; }
+    }
 
     [SerializeField]
     private Vector2 gridSize;
 
-    public Vector2 GridSize { get { return gridSize; } }
+    public Vector2 GridSize
+    {
+        get { return gridSize; }
+    }
 
     [SerializeField]
     private List<GameObject> objs = new List<GameObject>();
+    public List<GameObject> Objects
+    {
+        get { return objs; }
+    }
 
-    private List<GameObject> pathNodes = new List<GameObject>();
-    public List<GameObject> PathNodes
+    private List<Node> pathNodes = new List<Node>();
+    public List<Node> PathNodes
     {
         get { return pathNodes; }
         set { pathNodes = value; }
@@ -38,7 +49,10 @@ public class CreateGrid : MonoBehaviour {
 
     private void create()
     {
-        grid = new Grid( (int) gridSize.x, (int) gridSize.y);
+        grid = new Grid((int)gridSize.x, (int)gridSize.y);
+
+        worldBottomLeft = transform.position - Vector3.right * grid.GridWidth / 2 - Vector3.up * grid.GridHeight / 2;
+        worldPoint = transform.position + Vector3.right * grid.GridWidth / 2 + Vector3.up * grid.GridHeight / 2;        
 
         for (int x = 0; x < grid.GridWidth; x++)
         {
@@ -62,29 +76,48 @@ public class CreateGrid : MonoBehaviour {
     {
         grid.GetNode(0, 0).IsWalkable = false;
 
-        setColors();
+        //setColors();
     }
 
     private void setColors()
     {
         for (int i = 0; i < objs.Count; i++)
         {
+            Renderer render = objs[i].GetComponent<Renderer>();
+
             if (!grid.GetNode((int)objs[i].transform.position.x, (int)objs[i].transform.position.y).IsWalkable)
             {
-                Renderer rend = objs[i].GetComponent<Renderer>();
-                rend.material.color = Color.red;
+                render.material.color = Color.red;
             }
+
+            // check if pathNode list position is the same as in the objs list gameobject position.
+            for (int j = 0; j < pathNodes.Count; j++)
+            {
+                Vector2 objPos = objs[i].transform.position;
+                if (pathNodes[j].WorldPosition != objPos)
+                    continue;
+                
+                render.material.color = Color.black;
+            }
+            
         }
+        
     }
 
     private void Update()
     {
-        for (int i = 0; i < pathNodes.Count; i++)
-        {
-            Renderer rend = pathNodes[i].GetComponent<Renderer>();
+        setColors();
 
-            rend.material.color = Color.black;
+        Debug.Log("PathNodes: " +pathNodes.Count);
+
+        // quick reset function
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            for (int i = 0; i < objs.Count; i++)
+            {
+                Node node = grid.GetNode(objs[i].transform.position);
+                node.Reset();
+            }
         }
     }
-
 }

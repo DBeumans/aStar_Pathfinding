@@ -41,9 +41,9 @@ public class Grid {
         int x = (int)pos.x;
         int y = (int)pos.y;
 
-        for (int i = -1; i < 1; i++)
+        for (int i = -1; i <= 1; i++)
         {
-            for (int j = -1; j < 1; j++)
+            for (int j = -1; j <= 1; j++)
             {
                 if (i == 0 && j == 0)
                     continue;
@@ -81,6 +81,11 @@ public class Grid {
         return grid[x, y];
     }
 
+    public bool IsEndNode(Vector2 pos)
+    {
+        return GetNode((int)pos.x, (int)pos.y).IsEnd;
+    }
+
     /// <summary>
     /// Checks if the X and Y are within the grid.
     /// </summary>
@@ -100,5 +105,10 @@ public class Grid {
     public bool IsOnGrid(Vector2 pos)
     {
         return IsOnGrid((int)pos.x, (int)pos.y);
+    }
+
+    public GameObject NodeToGameObject(Node node)
+    {
+        return null;
     }
 }

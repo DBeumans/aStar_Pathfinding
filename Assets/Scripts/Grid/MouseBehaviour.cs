@@ -5,7 +5,7 @@ using UnityEngine;
 public class MouseBehaviour : MonoBehaviour {
 
     private static bool mouse_left;
-    public static bool MouseLeft { get { return MouseLeft; } }
+    public static bool MouseLeft { get { return mouse_left; } }
 
     private static bool mouse_right;
     public static bool MouseRight { get { return mouse_right; } }

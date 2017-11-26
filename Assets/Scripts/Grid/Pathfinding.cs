@@ -6,7 +6,6 @@ public class Pathfinding : MonoBehaviour {
 
     CreateGrid grid;
 
-    [SerializeField]
     Vector2 startPosition;
 
     Vector2 endPosition;
@@ -19,6 +18,7 @@ public class Pathfinding : MonoBehaviour {
     private void Update()
     {
         getEndPosition();
+        getStartPosition();
 
         FindPath(startPosition, endPosition);
     }
@@ -38,6 +38,19 @@ public class Pathfinding : MonoBehaviour {
         }
     }
 
+    private void getStartPosition()
+    {
+        for (int i = 0; i < grid.Objects.Count; i++)
+        {
+            Vector2 objPos = grid.Objects[i].transform.position;
+            Node node = grid.Grid.GetNode(objPos);
+            if (!node.IsStart)
+                continue;
+
+            startPosition = node.WorldPosition;
+        }
+    }
+
     private void FindPath(Vector2 startPos, Vector2 endPos)
     {
         Node startNode = grid.Grid.GetNode(startPos);
@@ -48,8 +61,7 @@ public class Pathfinding : MonoBehaviour {
         openSet.Add(startNode);
         
         while (openSet.Count > 0)
-        {
-            
+        {  
             Node currentNode = openSet[0];
 
             for (int i = 1; i < openSet.Count; i++)

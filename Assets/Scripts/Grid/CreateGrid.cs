@@ -8,17 +8,7 @@ public class CreateGrid : MonoBehaviour {
     public Grid Grid { get { return grid; } }
 
     [SerializeField]
-    private LayerMask obstacleMask;
-
-    [SerializeField]
     private GameObject gridObjectPrefab;
-
-    private Vector3 worldBottomLeft;
-    private Vector3 worldPoint;
-    public Vector3 WorldPoint
-    {
-        get { return worldPoint; }
-    }
 
     [SerializeField]
     private Vector2 gridSize;
@@ -49,10 +39,7 @@ public class CreateGrid : MonoBehaviour {
 
     private void create()
     {
-        grid = new Grid((int)gridSize.x, (int)gridSize.y);
-
-        worldBottomLeft = transform.position - Vector3.right * grid.GridWidth / 2 - Vector3.up * grid.GridHeight / 2;
-        worldPoint = transform.position + Vector3.right * grid.GridWidth / 2 + Vector3.up * grid.GridHeight / 2;        
+        grid = new Grid((int)gridSize.x, (int)gridSize.y);      
 
         for (int x = 0; x < grid.GridWidth; x++)
         {
@@ -68,30 +55,35 @@ public class CreateGrid : MonoBehaviour {
         GameObject obj = GameObject.Instantiate(gridObjectPrefab);
         obj.transform.position = new Vector2(x, y);
         obj.name = obj.name + " " + x + " " + y;
-        setWalls();
         objs.Add(obj);
-    }
-    
-    private void setWalls()
-    {
-        grid.GetNode(0, 0).IsWalkable = false;
-
-        //setColors();
     }
 
     private void setColors()
     {
         for (int i = 0; i < objs.Count; i++)
         {
+            
             Renderer render = objs[i].GetComponent<Renderer>();
+            render.material.color = Color.white;
+            Vector2 objpos = objs[i].transform.position; 
 
-            if (!grid.GetNode((int)objs[i].transform.position.x, (int)objs[i].transform.position.y).IsWalkable)
+            if (grid.GetNode(objpos).IsEnd)
+            {
+                render.material.color = Color.green;
+            }
+
+            if (!grid.GetNode(objpos).IsWalkable)
             {
                 render.material.color = Color.red;
             }
 
+            if(grid.GetNode(objpos).IsStart)
+            {
+                render.material.color = Color.yellow;
+            }
+
             // check if pathNode list position is the same as in the objs list gameobject position.
-            for (int j = 0; j < pathNodes.Count; j++)
+            for (int j = 0; j < pathNodes.Count-1; j++)
             {
                 Vector2 objPos = objs[i].transform.position;
                 if (pathNodes[j].WorldPosition != objPos)
@@ -99,6 +91,8 @@ public class CreateGrid : MonoBehaviour {
                 
                 render.material.color = Color.black;
             }
+
+            
             
         }
         
@@ -107,17 +101,6 @@ public class CreateGrid : MonoBehaviour {
     private void Update()
     {
         setColors();
-
-        Debug.Log("PathNodes: " +pathNodes.Count);
-
-        // quick reset function
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            for (int i = 0; i < objs.Count; i++)
-            {
-                Node node = grid.GetNode(objs[i].transform.position);
-                node.Reset();
-            }
-        }
+       
     }
 }
